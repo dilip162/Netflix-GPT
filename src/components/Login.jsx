@@ -1,8 +1,28 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidateData } from "../utils/validate";
 
 const Login = () => {
-  const [isSignIn, setIsSignIn] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(true);
+  const [errMessage, setErrorMessage] = useState(null);
+
+  const email = useRef(null);
+  const password = useRef(null);
+
+  const handleClick = () => {
+    // Validate form
+    const returnedVal = checkValidateData(
+      email.current.value,
+      password.current.value
+    );
+    setErrorMessage(returnedVal);
+
+    //SignIn / SignUp
+  };
+
+  const formHandle = (e) => {
+    e.preventDefault();
+  };
 
   const toggleSignInForm = () => {
     setIsSignIn(!isSignIn);
@@ -13,14 +33,14 @@ const Login = () => {
       <Header />
       <div>
         <img
-          className="max-h-screen w-full"
+          className=""
           src="https://assets.nflxext.com/ffe/siteui/vlv3/c38a2d52-138e-48a3-ab68-36787ece46b3/eeb03fc9-99c6-438e-824d-32917ce55783/IN-en-20240101-popsignuptwoweeks-perspective_alpha_website_large.jpg"
           alt="Netflix logo"
         />
       </div>
 
       <div className="absolute  top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 h-4/5 bg-zinc-950 bg-opacity-85 w-1/4 p-12 rounded-xl ">
-        <form>
+        <form onClick={formHandle}>
           <h1 className=" font-semibold text-4xl text-white mb-7">
             {isSignIn ? "Sign In" : "Sign Up"}
           </h1>
@@ -39,6 +59,7 @@ const Login = () => {
 
           <div>
             <input
+              ref={email}
               type="text"
               placeholder="Email or phone number"
               className="text-lg py-3  px-5 w-full mb-5 rounded-md outline-none"
@@ -47,13 +68,16 @@ const Login = () => {
 
           <div>
             <input
+              ref={password}
               type="password"
               placeholder="password"
               className="text-lg  py-3 px-5 w-full mb-5 rounded-md outline-none"
             />
           </div>
 
+          <p className="font-bold text-red-600">{errMessage}</p>
           <button
+            onClick={handleClick}
             type="submit"
             className="text-lg py-3 px-5 mt-5 text-white  bg-red-600  w-full rounded-md outline-none"
           >
