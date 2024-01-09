@@ -73,3 +73,19 @@ MovieList\*N
 -NetFlix-GPT
 -search Bar
 -Movie sujjestions
+
+# work flow
+
+- create react app
+  -configred Tailwind css
+  -Header
+  -Routing of App
+  -Login form
+  -Sign In form
+  -Form validation
+  -useRef hook
+  -firebase setup
+  -deploying our app to production
+  -create signup user account
+  -Implement sign In user api
+  -created redux store with useslice

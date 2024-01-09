@@ -1,6 +1,11 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidateData } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -17,7 +22,47 @@ const Login = () => {
     );
     setErrorMessage(returnedVal);
 
-    //SignIn / SignUp
+    if (errMessage) return;
+
+    // SignIn SignUp
+
+    if (!isSignIn) {
+      // Sign up
+
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log("User has been created successfully!!!", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(error.message);
+        });
+    } else {
+      // Sign In
+
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("SignIn successfully!!!");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(error.message);
+        });
+    }
   };
 
   const formHandle = (e) => {
@@ -39,7 +84,7 @@ const Login = () => {
         />
       </div>
 
-      <div className="absolute  top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 h-4/5 bg-zinc-950 bg-opacity-85 w-1/4 p-12 rounded-xl ">
+      <div className="absolute  top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 h-4/5 bg-zinc-950 bg-opacity-85 w-1/3 p-14 rounded-xl ">
         <form onClick={formHandle}>
           <h1 className=" font-semibold text-4xl text-white mb-7">
             {isSignIn ? "Sign In" : "Sign Up"}
