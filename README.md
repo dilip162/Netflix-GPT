@@ -89,3 +89,6 @@ MovieList\*N
   -create signup user account
   -Implement sign In user api
   -created redux store with useslice
+  -implemented the signout feature
+  -update profile api
+  -fetch movie list from tmdb api

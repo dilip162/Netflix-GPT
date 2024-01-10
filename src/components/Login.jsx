@@ -4,15 +4,22 @@ import { checkValidateData } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isSignIn, setIsSignIn] = useState(true);
   const [errMessage, setErrorMessage] = useState(null);
 
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
 
   const handleClick = () => {
     // Validate form
@@ -37,12 +44,34 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+
+          // Update user Profile
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/91053081?v=4",
+          })
+            .then(() => {
+              const { uid, displayName, email, photoURL } = auth;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
           console.log("User has been created successfully!!!", user);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setErrorMessage(error.message);
+          setErrorMessage(errorMessage);
         });
     } else {
       // Sign In
@@ -56,6 +85,7 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log("SignIn successfully!!!");
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -95,6 +125,7 @@ const Login = () => {
           ) : (
             <div>
               <input
+                ref={name}
                 type="text"
                 placeholder="Full name"
                 className="text-lg  py-3 px-5 w-full mb-5 rounded-md outline-none"
