@@ -7,7 +7,7 @@ export const VideoBackground = ({ movieId }) => {
 
   useMovieTrailer(movieId);
   return (
-    <div>
+    <div className="shadow-2xl">
       <iframe
         className="w-screen aspect-video"
         src={
