@@ -95,3 +95,4 @@ MovieList\*N
   -bugFix : signup user display name profile picture update
   -bugFix : if the user is not logged in redirect /browse to the login page and vice versa
   -unsubscribed to the onAuthStateChange callback
+  -

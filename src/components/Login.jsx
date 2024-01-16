@@ -9,7 +9,7 @@ import {
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
-import { USER_AVATAR } from "../utils/constants";
+import { BG_URL, USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -100,12 +100,8 @@ const Login = () => {
   return (
     <div className="relative">
       <Header />
-      <div>
-        <img
-          className=""
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/c38a2d52-138e-48a3-ab68-36787ece46b3/eeb03fc9-99c6-438e-824d-32917ce55783/IN-en-20240101-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-          alt="Netflix BG"
-        />
+      <div className="absolute">
+        <img className="" src={BG_URL} alt="Netflix BG" />
       </div>
 
       <div className="absolute  top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 h-4/5 bg-zinc-950 bg-opacity-85 w-1/3 p-14 rounded-xl ">
